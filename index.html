@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rolling Acres Studio | A Studio Among the Trees</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest-green: #2d5a3d;
+            --sage: #87a878;
+            --cream: #f8f5f0;
+            --warm-brown: #8b6914;
+            --charcoal: #333333;
+            --soft-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--charcoal);
+            line-height: 1.6;
+            background-color: var(--cream);
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--soft-white);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--forest-green);
+            text-decoration: none;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 0.75rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+            color: var(--sage);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--forest-green);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--cream) 0%, #e8e4dc 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L35 20 L30 18 L25 20 Z' fill='%2387a87815'/%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--forest-green);
+            margin-bottom: 0.5rem;
+            line-height: 1.1;
+        }
+
+        .tagline {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--sage);
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--charcoal);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--forest-green);
+            color: var(--soft-white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid var(--forest-green);
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--forest-green);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--forest-green);
+            margin-left: 1rem;
+        }
+
+        .btn-outline:hover {
+            background: var(--forest-green);
+            color: var(--soft-white);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--soft-white);
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--forest-green);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--charcoal);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--cream);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--forest-green);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--charcoal);
+            font-size: 0.95rem;
+        }
+
+        /* Upcoming Workshops Section */
+        .workshops-preview {
+            padding: 6rem 2rem;
+            background: var(--cream);
+        }
+
+        .workshop-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .workshop-card {
+            background: var(--soft-white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .workshop-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .workshop-image {
+            height: 200px;
+            background: linear-gradient(135deg, var(--sage) 0%, var(--forest-green) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--soft-white);
+            font-size: 3rem;
+        }
+
+        .workshop-content {
+            padding: 1.5rem;
+        }
+
+        .workshop-date {
+            display: inline-block;
+            background: var(--cream);
+            color: var(--forest-green);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .workshop-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: var(--charcoal);
+            margin-bottom: 0.5rem;
+        }
+
+        .workshop-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: var(--sage);
+            margin-bottom: 1rem;
+        }
+
+        .workshop-content p {
+            font-size: 0.95rem;
+            color: var(--charcoal);
+            margin-bottom: 1rem;
+        }
+
+        .workshop-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--forest-green);
+        }
+
+        .workshop-includes {
+            font-size: 0.85rem;
+            color: var(--sage);
+            display: block;
+        }
+
+        .view-all-link {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 6rem 2rem;
+            background: var(--forest-green);
+            text-align: center;
+            color: var(--soft-white);
+        }
+
+        .cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        .cta .btn {
+            background: var(--soft-white);
+            color: var(--forest-green);
+            border-color: var(--soft-white);
+        }
+
+        .cta .btn:hover {
+            background: transparent;
+            color: var(--soft-white);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--charcoal);
+            color: var(--soft-white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--soft-white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                Rolling Acres Studio
+                <span>A Studio Among the Trees</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="workshops.html">Workshops</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Rolling Acres Studio</h1>
+            <p class="tagline">A Studio Among the Trees</p>
+            <p class="hero-description">
+                Escape to the country for a relaxing day of creativity. Learn new skills,
+                craft something beautiful, and enjoy delicious food with friends—old and new—in
+                our peaceful studio nestled among the trees.
+            </p>
+            <div>
+                <a href="workshops.html" class="btn">Browse Workshops</a>
+                <a href="contact.html" class="btn btn-outline">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>The Rolling Acres Experience</h2>
+                <p>More than a class—it's a day of creative connection in a beautiful country setting.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🌳</div>
+                    <h3>Beautiful Setting</h3>
+                    <p>Our studio sits among mature trees on peaceful countryside acreage. Fresh air, natural light, and the sounds of nature create the perfect creative atmosphere.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3>Hands-On Learning</h3>
+                    <p>From power tools to paintbrushes, you'll learn real skills while creating projects you'll be proud to take home. No experience necessary—just bring your enthusiasm!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🍽️</div>
+                    <h3>Country Hospitality</h3>
+                    <p>Every workshop includes delicious food and beverages. Full-day classes feature lunch on the patio; afternoon sessions include snacks and refreshments.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Small Groups</h3>
+                    <p>With just 6-8 participants per class, you'll enjoy personal attention, make new friends, and experience the warmth of a close-knit creative community.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Upcoming Workshops -->
+    <section class="workshops-preview">
+        <div class="section-container">
+            <div class="section-header">
+                <h2>Upcoming Workshops</h2>
+                <p>Grab your spot in one of our upcoming creative sessions.</p>
+            </div>
+            <div class="workshop-cards">
+                <div class="workshop-card">
+                    <div class="workshop-image">🪵</div>
+                    <div class="workshop-content">
+                        <span class="workshop-date">Friday, March 20</span>
+                        <h3>Hanging Wood Shelf</h3>
+                        <div class="workshop-meta">
+                            <span>10:00 AM - 3:00 PM</span>
+                            <span>6 spots</span>
+                        </div>
+                        <p>Learn to use power tools! Cut, sand, glue, and nail your way to a beautiful custom shelf you design and paint yourself.</p>
+                        <span class="workshop-price">$40</span>
+                        <span class="workshop-includes">Lunch & beverages included</span>
+                    </div>
+                </div>
+                <div class="workshop-card">
+                    <div class="workshop-image">🎨</div>
+                    <div class="workshop-content">
+                        <span class="workshop-date">Saturday, March 21</span>
+                        <h3>Mixed Media Canvas</h3>
+                        <div class="workshop-meta">
+                            <span>10:00 AM - 3:00 PM</span>
+                            <span>8 spots</span>
+                        </div>
+                        <p>Create a stunning mixed media artwork using a variety of materials and techniques. Perfect for all skill levels.</p>
+                        <span class="workshop-price">$40</span>
+                        <span class="workshop-includes">Lunch & beverages included</span>
+                    </div>
+                </div>
+                <div class="workshop-card">
+                    <div class="workshop-image">🦉</div>
+                    <div class="workshop-content">
+                        <span class="workshop-date">Sunday, March 22</span>
+                        <h3>Decorative Owl</h3>
+                        <div class="workshop-meta">
+                            <span>1:30 PM - 5:00 PM</span>
+                            <span>8 spots</span>
+                        </div>
+                        <p>Combine wood pieces, buttons, metal, and repurposed items to create a one-of-a-kind owl for your wall.</p>
+                        <span class="workshop-price">$30</span>
+                        <span class="workshop-includes">Snacks & beverages included</span>
+                    </div>
+                </div>
+            </div>
+            <div class="view-all-link">
+                <a href="workshops.html" class="btn">View All Workshops</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <h2>Ready for a Creative Escape?</h2>
+        <p>Join us at Rolling Acres Studio for a day of making, learning, and connecting. No experience required—just bring yourself and your sense of adventure.</p>
+        <a href="contact.html" class="btn">Reserve Your Spot</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Rolling Acres Studio</div>
+            <p>A creative retreat among the trees</p>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="workshops.html">Workshops</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <p class="copyright">&copy; 2026 Rolling Acres Studio. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshops | Rolling Acres Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest-green: #2d5a3d;
+            --sage: #87a878;
+            --cream: #f8f5f0;
+            --warm-brown: #8b6914;
+            --charcoal: #333333;
+            --soft-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--charcoal);
+            line-height: 1.6;
+            background-color: var(--cream);
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--soft-white);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--forest-green);
+            text-decoration: none;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 0.75rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+            color: var(--sage);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--forest-green);
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 10rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--cream) 0%, #e8e4dc 100%);
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--forest-green);
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: var(--charcoal);
+        }
+
+        /* Workshop Info Banner */
+        .info-banner {
+            background: var(--forest-green);
+            color: var(--soft-white);
+            padding: 1.5rem 2rem;
+        }
+
+        .info-banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-item span {
+            font-size: 1.2rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Month Section */
+        .month-section {
+            margin-bottom: 4rem;
+        }
+
+        .month-header {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--forest-green);
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--sage);
+        }
+
+        /* Workshop Card - Full Width */
+        .workshop-card-full {
+            background: var(--soft-white);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .workshop-card-full:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .workshop-image-full {
+            background: linear-gradient(135deg, var(--sage) 0%, var(--forest-green) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            min-height: 280px;
+        }
+
+        .workshop-details {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .workshop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .workshop-title-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            color: var(--charcoal);
+            margin-bottom: 0.5rem;
+        }
+
+        .workshop-date-time {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .date-badge {
+            background: var(--cream);
+            color: var(--forest-green);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .time-badge {
+            color: var(--sage);
+            font-weight: 500;
+        }
+
+        .workshop-pricing {
+            text-align: right;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--forest-green);
+        }
+
+        .spots {
+            font-size: 0.9rem;
+            color: var(--sage);
+        }
+
+        .workshop-description {
+            flex-grow: 1;
+            margin-bottom: 1.5rem;
+        }
+
+        .workshop-description p {
+            color: var(--charcoal);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .workshop-meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--cream);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .hospitality-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #fef9e7;
+            color: var(--warm-brown);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.875rem 2rem;
+            background: var(--forest-green);
+            color: var(--soft-white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid var(--forest-green);
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--forest-green);
+        }
+
+        /* Skills Tag */
+        .skills-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #e8f5e9;
+            color: var(--forest-green);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Project Types Section */
+        .project-types {
+            background: var(--soft-white);
+            padding: 4rem 2rem;
+        }
+
+        .project-types-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--forest-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-type-card {
+            background: var(--cream);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .project-type-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .project-type-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-type-card h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--forest-green);
+            margin-bottom: 0.25rem;
+        }
+
+        .project-type-card p {
+            font-size: 0.85rem;
+            color: var(--sage);
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 4rem 2rem;
+            background: var(--forest-green);
+            text-align: center;
+            color: var(--soft-white);
+        }
+
+        .cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        .cta .btn {
+            background: var(--soft-white);
+            color: var(--forest-green);
+            border-color: var(--soft-white);
+        }
+
+        .cta .btn:hover {
+            background: transparent;
+            color: var(--soft-white);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--charcoal);
+            color: var(--soft-white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--soft-white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .workshop-card-full {
+                grid-template-columns: 1fr;
+            }
+
+            .workshop-image-full {
+                min-height: 200px;
+            }
+
+            .workshop-header {
+                flex-direction: column;
+            }
+
+            .workshop-pricing {
+                text-align: left;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .info-banner-content {
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                Rolling Acres Studio
+                <span>A Studio Among the Trees</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="workshops.html" class="active">Workshops</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>Workshop Schedule</h1>
+        <p>Join us for a day of creativity, learning, and connection. Each workshop includes all materials, instruction, and delicious refreshments.</p>
+    </section>
+
+    <!-- Info Banner -->
+    <div class="info-banner">
+        <div class="info-banner-content">
+            <div class="info-item">
+                <span>🎨</span>
+                <p>All materials included</p>
+            </div>
+            <div class="info-item">
+                <span>🍽️</span>
+                <p>Food & beverages provided</p>
+            </div>
+            <div class="info-item">
+                <span>👥</span>
+                <p>Small groups (6-8 people)</p>
+            </div>
+            <div class="info-item">
+                <span>✨</span>
+                <p>No experience needed</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- March Workshops -->
+        <section class="month-section">
+            <h2 class="month-header">March 2026</h2>
+
+            <!-- Workshop 1: Hanging Wood Shelf -->
+            <div class="workshop-card-full">
+                <div class="workshop-image-full">🪵</div>
+                <div class="workshop-details">
+                    <div class="workshop-header">
+                        <div class="workshop-title-section">
+                            <h3>Hanging Wood Shelf</h3>
+                            <div class="workshop-date-time">
+                                <span class="date-badge">📅 Friday, March 20</span>
+                                <span class="time-badge">🕐 10:00 AM - 3:00 PM</span>
+                            </div>
+                        </div>
+                        <div class="workshop-pricing">
+                            <span class="price">$40</span>
+                            <span class="spots">6 spots available</span>
+                        </div>
+                    </div>
+                    <div class="workshop-description">
+                        <span class="skills-tag">🔧 Learn Power Tools</span>
+                        <p>Ready to build something with your own hands? In this workshop, you'll learn to use power tools safely and confidently. Cut and sand wood, use a glue gun and nail gun, then design and paint your very own hanging shelf to take home.</p>
+                        <p>Perfect for beginners who want to gain practical woodworking skills in a supportive, fun environment.</p>
+                    </div>
+                    <div class="workshop-meta-row">
+                        <span class="hospitality-badge">🍽️ Beverages & lunch on patio included</span>
+                        <a href="contact.html?workshop=wood-shelf" class="btn">Reserve My Spot</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workshop 2: Mixed Media Canvas -->
+            <div class="workshop-card-full">
+                <div class="workshop-image-full">🎨</div>
+                <div class="workshop-details">
+                    <div class="workshop-header">
+                        <div class="workshop-title-section">
+                            <h3>Mixed Media Canvas</h3>
+                            <div class="workshop-date-time">
+                                <span class="date-badge">📅 Saturday, March 21</span>
+                                <span class="time-badge">🕐 10:00 AM - 3:00 PM</span>
+                            </div>
+                        </div>
+                        <div class="workshop-pricing">
+                            <span class="price">$40</span>
+                            <span class="spots">8 spots available</span>
+                        </div>
+                    </div>
+                    <div class="workshop-description">
+                        <p>Unleash your creativity with mixed media art! Combine paints, papers, textures, and found objects to create a stunning one-of-a-kind canvas that expresses your unique artistic vision.</p>
+                        <p>This workshop is perfect for all skill levels—whether you're a seasoned artist or picking up a brush for the first time.</p>
+                    </div>
+                    <div class="workshop-meta-row">
+                        <span class="hospitality-badge">🍽️ Beverages & lunch on patio included</span>
+                        <a href="contact.html?workshop=mixed-media" class="btn">Reserve My Spot</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workshop 3: Owl -->
+            <div class="workshop-card-full">
+                <div class="workshop-image-full">🦉</div>
+                <div class="workshop-details">
+                    <div class="workshop-header">
+                        <div class="workshop-title-section">
+                            <h3>Decorative Owl</h3>
+                            <div class="workshop-date-time">
+                                <span class="date-badge">📅 Sunday, March 22</span>
+                                <span class="time-badge">🕐 1:30 PM - 5:00 PM</span>
+                            </div>
+                        </div>
+                        <div class="workshop-pricing">
+                            <span class="price">$30</span>
+                            <span class="spots">8 spots available</span>
+                        </div>
+                    </div>
+                    <div class="workshop-description">
+                        <p>Combine multiple materials to create a one-of-a-kind owl to hang on your wall! Choose from wood pieces, buttons, metal, repurposed items, paint, and stain for a creation that's uniquely yours.</p>
+                        <p>This is a wonderfully relaxing afternoon project where you can let your imagination guide you.</p>
+                    </div>
+                    <div class="workshop-meta-row">
+                        <span class="hospitality-badge">🥤 Snacks & beverages included</span>
+                        <a href="contact.html?workshop=owl" class="btn">Reserve My Spot</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- April Workshops -->
+        <section class="month-section">
+            <h2 class="month-header">April 2026</h2>
+
+            <!-- Workshop 4: Repurposed Glass -->
+            <div class="workshop-card-full">
+                <div class="workshop-image-full">🍾</div>
+                <div class="workshop-details">
+                    <div class="workshop-header">
+                        <div class="workshop-title-section">
+                            <h3>Repurposed Glass Bottles & Vases</h3>
+                            <div class="workshop-date-time">
+                                <span class="date-badge">📅 Saturday, April 25</span>
+                                <span class="time-badge">🕐 10:00 AM - 3:00 PM</span>
+                            </div>
+                        </div>
+                        <div class="workshop-pricing">
+                            <span class="price">$40</span>
+                            <span class="spots">8 spots available</span>
+                        </div>
+                    </div>
+                    <div class="workshop-description">
+                        <p>Give new life to old glass! Transform ordinary bottles and vases into beautiful decorative pieces using paint, texture, embellishments, and creative techniques.</p>
+                        <p>You'll leave with a collection of gorgeous upcycled glassware that's both eco-friendly and stunning.</p>
+                    </div>
+                    <div class="workshop-meta-row">
+                        <span class="hospitality-badge">🍽️ Beverages & lunch on patio included</span>
+                        <a href="contact.html?workshop=glass" class="btn">Reserve My Spot</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workshop 5: Wooden Church -->
+            <div class="workshop-card-full">
+                <div class="workshop-image-full">⛪</div>
+                <div class="workshop-details">
+                    <div class="workshop-header">
+                        <div class="workshop-title-section">
+                            <h3>Wooden Church</h3>
+                            <div class="workshop-date-time">
+                                <span class="date-badge">📅 Sunday, April 26</span>
+                                <span class="time-badge">🕐 1:30 PM - 5:00 PM</span>
+                            </div>
+                        </div>
+                        <div class="workshop-pricing">
+                            <span class="price">$30</span>
+                            <span class="spots">8 spots available</span>
+                        </div>
+                    </div>
+                    <div class="workshop-description">
+                        <span class="skills-tag">🔧 Learn Power Tools</span>
+                        <p>Create a charming decorative wooden church! Learn to use power tools to cut and sand wood, then use glue and nail gun techniques to assemble your piece. Finish by designing and painting your church however you envision it.</p>
+                        <p>A meaningful project that makes a lovely home accent or thoughtful gift.</p>
+                    </div>
+                    <div class="workshop-meta-row">
+                        <span class="hospitality-badge">🥤 Snacks & beverages included</span>
+                        <a href="contact.html?workshop=church" class="btn">Reserve My Spot</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Project Types We Offer -->
+    <section class="project-types">
+        <div class="project-types-container">
+            <div class="section-header">
+                <h2>Projects We Offer</h2>
+                <p>Check back often—we rotate projects throughout the year!</p>
+            </div>
+            <div class="project-grid">
+                <div class="project-type-card">
+                    <div class="icon">🎨</div>
+                    <h4>Mixed Media Canvas</h4>
+                    <p>Paint & collage art</p>
+                </div>
+                <div class="project-type-card">
+                    <div class="icon">⛪</div>
+                    <h4>Wooden Church</h4>
+                    <p>Power tools & paint</p>
+                </div>
+                <div class="project-type-card">
+                    <div class="icon">🪞</div>
+                    <h4>Tile Mosaic</h4>
+                    <p>Colorful tile art</p>
+                </div>
+                <div class="project-type-card">
+                    <div class="icon">🪵</div>
+                    <h4>Wood Shelf</h4>
+                    <p>Functional woodwork</p>
+                </div>
+                <div class="project-type-card">
+                    <div class="icon">🍾</div>
+                    <h4>Repurposed Glass</h4>
+                    <p>Upcycled bottles & vases</p>
+                </div>
+                <div class="project-type-card">
+                    <div class="icon">🦉</div>
+                    <h4>Decorative Owls</h4>
+                    <p>Mixed material art</p>
+                </div>
+                <div class="project-type-card">
+                    <div class="icon">💐</div>
+                    <h4>Fresh Flowers</h4>
+                    <p>June & July only</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <h2>Don't See Your Preferred Date?</h2>
+        <p>We're happy to schedule additional workshops for groups of 4 or more. Reach out and let's plan your perfect creative day!</p>
+        <a href="contact.html" class="btn">Contact Us</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Rolling Acres Studio</div>
+            <p>A creative retreat among the trees</p>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="workshops.html">Workshops</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <p class="copyright">&copy; 2026 Rolling Acres Studio. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

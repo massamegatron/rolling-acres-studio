@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Rolling Acres Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --forest-green: #2d5a3d;
+            --sage: #87a878;
+            --cream: #f8f5f0;
+            --warm-brown: #8b6914;
+            --charcoal: #333333;
+            --soft-white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            color: var(--charcoal);
+            line-height: 1.6;
+            background-color: var(--cream);
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--soft-white);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--forest-green);
+            text-decoration: none;
+        }
+
+        .logo span {
+            display: block;
+            font-size: 0.75rem;
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 400;
+            color: var(--sage);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--charcoal);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--forest-green);
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 10rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--cream) 0%, #e8e4dc 100%);
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--forest-green);
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+            color: var(--charcoal);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* About Section */
+        .about-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-bottom: 5rem;
+        }
+
+        .about-section.reverse {
+            direction: rtl;
+        }
+
+        .about-section.reverse > * {
+            direction: ltr;
+        }
+
+        .about-image {
+            background: linear-gradient(135deg, var(--sage) 0%, var(--forest-green) 100%);
+            border-radius: 16px;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image::after {
+            content: 'Photo coming soon';
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        .about-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--forest-green);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+            font-size: 1.05rem;
+        }
+
+        .about-text .highlight {
+            font-style: italic;
+            color: var(--sage);
+            font-size: 1.2rem;
+            margin: 1.5rem 0;
+            padding-left: 1rem;
+            border-left: 3px solid var(--sage);
+        }
+
+        /* Values Section */
+        .values-section {
+            background: var(--soft-white);
+            padding: 4rem;
+            border-radius: 20px;
+            margin-bottom: 4rem;
+        }
+
+        .values-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--forest-green);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .value-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .value-card h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--forest-green);
+            margin-bottom: 0.75rem;
+            font-size: 1.25rem;
+        }
+
+        .value-card p {
+            color: var(--charcoal);
+            font-size: 0.95rem;
+        }
+
+        /* Studio Section */
+        .studio-section {
+            margin-bottom: 4rem;
+        }
+
+        .studio-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--forest-green);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .studio-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .studio-image {
+            background: linear-gradient(135deg, var(--sage) 0%, var(--forest-green) 100%);
+            border-radius: 12px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            position: relative;
+        }
+
+        .studio-image.large {
+            grid-column: span 2;
+            height: 300px;
+        }
+
+        .studio-description {
+            text-align: center;
+            max-width: 700px;
+            margin: 2rem auto 0;
+        }
+
+        .studio-description p {
+            font-size: 1.1rem;
+            color: var(--charcoal);
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 4rem 2rem;
+            background: var(--forest-green);
+            text-align: center;
+            color: var(--soft-white);
+        }
+
+        .cta h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--soft-white);
+            color: var(--forest-green);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid var(--soft-white);
+        }
+
+        .btn:hover {
+            background: transparent;
+            color: var(--soft-white);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--charcoal);
+            color: var(--soft-white);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--soft-white);
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-section.reverse {
+                direction: ltr;
+            }
+
+            .about-image {
+                height: 300px;
+            }
+
+            .studio-gallery {
+                grid-template-columns: 1fr;
+            }
+
+            .studio-image.large {
+                grid-column: span 1;
+                height: 200px;
+            }
+
+            .values-section {
+                padding: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                Rolling Acres Studio
+                <span>A Studio Among the Trees</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="workshops.html">Workshops</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>About Rolling Acres</h1>
+        <p>Where creativity meets country hospitality</p>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Meet Judy -->
+        <section class="about-section">
+            <div class="about-image">👩‍🎨</div>
+            <div class="about-text">
+                <h2>Meet Judy</h2>
+                <p>Welcome to Rolling Acres Studio! I'm Judy, and I've been creating art and teaching workshops for over [X] years. What started as a personal passion has grown into something I love sharing with others.</p>
+                <p class="highlight">"There's something magical about working with your hands, creating something from nothing, and sharing that experience with others."</p>
+                <p>I believe everyone has creativity inside them—sometimes it just needs the right environment to come out. That's why I created this studio: a peaceful place among the trees where you can slow down, learn something new, and leave with both a handmade treasure and a refreshed spirit.</p>
+                <p><em>[Judy, feel free to personalize this section with your own story!]</em></p>
+            </div>
+        </section>
+
+        <!-- The Studio -->
+        <section class="about-section reverse">
+            <div class="about-image">🏡</div>
+            <div class="about-text">
+                <h2>The Studio</h2>
+                <p>Rolling Acres Studio sits on peaceful countryside acreage, surrounded by mature trees and natural beauty. The studio itself is a bright, welcoming space filled with tools, supplies, and inspiration.</p>
+                <p>Weather permitting, we extend our creative space outdoors—enjoying lunch on the patio, painting in the fresh air, or simply soaking in the tranquil setting between project sessions.</p>
+                <p>It's a place where you can escape the hustle, breathe deep, and focus on the simple joy of making something with your hands.</p>
+            </div>
+        </section>
+
+        <!-- Our Values -->
+        <section class="values-section">
+            <h2>What Makes Rolling Acres Special</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">🤝</div>
+                    <h3>Community</h3>
+                    <p>Whether you come with friends or meet new ones here, every workshop is a chance to connect over creativity and good conversation.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🌿</div>
+                    <h3>Relaxation</h3>
+                    <p>Leave your stress at the door. Our country setting and unhurried pace create the perfect environment for creative flow.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">🎯</div>
+                    <h3>Real Skills</h3>
+                    <p>You'll leave each workshop with genuine skills—whether it's using power tools, mixing media, or arranging flowers.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">💚</div>
+                    <h3>Hospitality</h3>
+                    <p>Good food, warm welcomes, and thoughtful touches. We believe creativity flows better when you're well-fed and cared for.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Studio Gallery -->
+        <section class="studio-section">
+            <h2>The Space</h2>
+            <div class="studio-gallery">
+                <div class="studio-image large">🌳</div>
+                <div class="studio-image">🎨</div>
+                <div class="studio-image">🪵</div>
+                <div class="studio-image">☕</div>
+                <div class="studio-image large">🏞️</div>
+            </div>
+            <div class="studio-description">
+                <p>A creative studio environment nestled in a beautiful setting among the trees. Tasty food and beverages served with country hospitality.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <h2>Come Create With Us</h2>
+        <p>Ready for a day of creativity, good food, and great company? Browse our upcoming workshops and find your next creative adventure.</p>
+        <a href="workshops.html" class="btn">View Workshops</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Rolling Acres Studio</div>
+            <p>A creative retreat among the trees</p>
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="workshops.html">Workshops</a>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <p class="copyright">&copy; 2026 Rolling Acres Studio. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
