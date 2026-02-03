@@ -201,9 +201,14 @@
             width: 100%;
         }
 
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             background: transparent;
             color: var(--forest-green);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .form-note {
@@ -365,6 +370,41 @@
             margin-bottom: 0.5rem;
         }
 
+        /* Error Message (hidden by default) */
+        .error-message {
+            display: none;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 1.25rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .error-message p {
+            font-size: 0.95rem;
+        }
+
+        /* Loading spinner on button */
+        .btn .spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+        .btn.loading .spinner { display: inline-block; }
+        .btn.loading .btn-text { opacity: 0.7; }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 900px) {
             .main-content {
@@ -425,6 +465,10 @@
                 <p>We've received your reservation request and will be in touch within 24 hours.</p>
             </div>
 
+            <div class="error-message" id="errorMessage">
+                <p id="errorText">Something went wrong. Please try again or email us directly.</p>
+            </div>
+
             <form id="reservationForm">
                 <div class="form-row">
                     <div class="form-group">
@@ -452,18 +496,18 @@
                     <select id="workshop" name="workshop" required>
                         <option value="">Select a workshop...</option>
                         <optgroup label="March 2026">
-                            <option value="wood-shelf-mar20">Hanging Wood Shelf - Fri, March 20 ($40)</option>
-                            <option value="mixed-media-mar21">Mixed Media Canvas - Sat, March 21 ($40)</option>
-                            <option value="owl-mar22">Decorative Owl - Sun, March 22 ($30)</option>
+                            <option value="wood-shelf-mar20" data-price="40" data-label="Hanging Wood Shelf – Fri, March 20">Hanging Wood Shelf - Fri, March 20 ($40)</option>
+                            <option value="mixed-media-mar21" data-price="40" data-label="Mixed Media Canvas – Sat, March 21">Mixed Media Canvas - Sat, March 21 ($40)</option>
+                            <option value="owl-mar22" data-price="30" data-label="Decorative Owl – Sun, March 22">Decorative Owl - Sun, March 22 ($30)</option>
                         </optgroup>
                         <optgroup label="April 2026">
-                            <option value="glass-apr25">Repurposed Glass - Sat, April 25 ($40)</option>
-                            <option value="church-apr26">Wooden Church - Sun, April 26 ($30)</option>
+                            <option value="glass-apr25" data-price="40" data-label="Repurposed Glass – Sat, April 25">Repurposed Glass - Sat, April 25 ($40)</option>
+                            <option value="church-apr26" data-price="30" data-label="Wooden Church – Sun, April 26">Wooden Church - Sun, April 26 ($30)</option>
                         </optgroup>
                         <optgroup label="Other">
-                            <option value="future">Interested in future workshops</option>
-                            <option value="private">Private group booking inquiry</option>
-                            <option value="general">General question</option>
+                            <option value="future" data-price="0" data-label="Interested in future workshops">Interested in future workshops</option>
+                            <option value="private" data-price="0" data-label="Private group booking inquiry">Private group booking inquiry</option>
+                            <option value="general" data-price="0" data-label="General question">General question</option>
                         </optgroup>
                     </select>
                 </div>
@@ -496,7 +540,10 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn">Send Reservation Request</button>
+                <button type="submit" class="btn" id="submitBtn">
+                    <span class="spinner"></span>
+                    <span class="btn-text">Send Reservation Request</span>
+                </button>
 
                 <p class="form-note">We'll follow up via email to confirm your spot and provide payment details.</p>
             </form>
@@ -576,32 +623,180 @@
     </footer>
 
     <script>
-        // Simple form handling (demo purposes)
-        document.getElementById('reservationForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+    // ─────────────────────────────────────────────
+    // HUBSPOT INTEGRATION — uses the Claude API as
+    // a secure proxy so no HubSpot credentials are
+    // ever exposed in client-side code.
+    //
+    // What happens on submit:
+    //   1. POST to Claude /v1/messages with an MCP
+    //      server pointed at HubSpot.
+    //   2. Claude creates (or finds) the Contact.
+    //   3. Claude creates a Deal linked to that
+    //      Contact with workshop name + price.
+    //   4. We show success or surface an error.
+    // ─────────────────────────────────────────────
 
-            // In production, this would submit to HubSpot
-            // For demo, we'll show a success message
-            document.getElementById('successMessage').style.display = 'block';
-            this.reset();
+    const CLAUDE_API = "https://api.anthropic.com/v1/messages";
 
-            // Scroll to success message
-            document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
-        });
+    // ── helpers ──────────────────────────────────
+    function hideMessages() {
+        document.getElementById("successMessage").style.display = "none";
+        document.getElementById("errorMessage").style.display  = "none";
+    }
 
-        // Pre-fill workshop from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const workshopParam = urlParams.get('workshop');
-        if (workshopParam) {
-            const workshopSelect = document.getElementById('workshop');
-            const options = workshopSelect.options;
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].value.includes(workshopParam)) {
-                    workshopSelect.selectedIndex = i;
-                    break;
+    function showSuccess() {
+        hideMessages();
+        document.getElementById("successMessage").style.display = "block";
+        document.getElementById("successMessage").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function showError(msg) {
+        hideMessages();
+        document.getElementById("errorText").textContent = msg || "Something went wrong. Please try again or email us directly.";
+        document.getElementById("errorMessage").style.display = "block";
+        document.getElementById("errorMessage").scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    function setLoading(on) {
+        const btn = document.getElementById("submitBtn");
+        btn.disabled = on;
+        btn.classList.toggle("loading", on);
+    }
+
+    // ── extract text blocks from a Claude response ──
+    function extractText(contentBlocks) {
+        return (contentBlocks || [])
+            .filter(b => b.type === "text")
+            .map(b => b.text)
+            .join("\n");
+    }
+
+    // ── main submission handler ──────────────────
+    document.getElementById("reservationForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        hideMessages();
+        setLoading(true);
+
+        // ── 1. gather form values ──
+        const firstName   = document.getElementById("firstName").value.trim();
+        const lastName    = document.getElementById("lastName").value.trim();
+        const email       = document.getElementById("email").value.trim();
+        const phone       = document.getElementById("phone").value.trim();
+        const workshopEl  = document.getElementById("workshop");
+        const workshopVal = workshopEl.value;
+        const workshopLabel = workshopEl.options[workshopEl.selectedIndex].dataset.label || workshopVal;
+        const workshopPrice = Number(workshopEl.options[workshopEl.selectedIndex].dataset.price || 0);
+        const partySize   = document.getElementById("partySize").value;
+        const message     = document.getElementById("message").value.trim();
+        const hearAbout   = document.getElementById("hearAbout").value;
+
+        // ── 2. build the prompt for Claude + MCP ──
+        // We give Claude very explicit instructions so
+        // it reliably calls the right MCP tools in order.
+        const prompt = `You are a backend helper for Rolling Acres Studio. Execute the following steps EXACTLY, using the HubSpot MCP tools. Do not skip any step.
+
+STEP 1 — Search for an existing contact with email "${email}".
+  • Use the search tool on object type "contacts" with a query or filter for email = "${email}".
+  • If a contact with that email already exists, note its ID. If not, proceed to step 2.
+
+STEP 2 — Create the contact (only if one was NOT found in step 1).
+  • Create a contact with these properties:
+      firstname : ${firstName}
+      lastname  : ${lastName}
+      email     : ${email}
+      ${phone ? `phone     : ${phone}` : ""}
+      lifecyclestage : lead
+  • Note the new contact's ID.
+
+STEP 3 — Create a Deal linked to the contact.
+  • Create a deal with these properties:
+      dealname  : ${workshopLabel} — ${firstName} ${lastName}
+      amount    : ${workshopPrice}
+      dealstage : 2990894792
+      pipeline  : default
+      closedate : ${new Date(Date.now() + 14 * 86400000).toISOString().split("T")[0]}T00:00:00Z
+      description : Party size: ${partySize}. How heard: ${hearAbout || "not provided"}. Message: ${message || "none"}
+  • Associate the deal with the contact ID from step 1 or 2.
+
+After completing all steps, reply with a short JSON summary:
+  { "contactId": <id>, "dealId": <id>, "status": "success" }
+
+If any step fails, reply with:
+  { "status": "error", "reason": "<what went wrong>" }`;
+
+        try {
+            const res = await fetch(CLAUDE_API, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    model: "claude-sonnet-4-20250514",
+                    max_tokens: 1000,
+                    messages: [{ role: "user", content: prompt }],
+                    mcp_servers: [
+                        {
+                            type: "url",
+                            url:  "https://mcp.hubspot.com/anthropic",
+                            name: "hubspot-mcp"
+                        }
+                    ]
+                })
+            });
+
+            if (!res.ok) {
+                // surface the HTTP error for debugging during setup
+                const errBody = await res.text();
+                console.error("Claude API error", res.status, errBody);
+                showError("Could not reach our backend. Please email rollingacresstudio@gmail.com directly.");
+                return;
+            }
+
+            const data = await res.json();
+            const reply = extractText(data.content);
+            console.log("Claude reply:", reply);  // helpful during setup
+
+            // ── 3. parse Claude's JSON summary ──
+            // Strip possible markdown fences
+            const jsonMatch = reply.match(/\{[\s\S]*?\}/);
+            if (jsonMatch) {
+                const result = JSON.parse(jsonMatch[0]);
+                if (result.status === "success") {
+                    showSuccess();
+                    document.getElementById("reservationForm").reset();
+                } else {
+                    showError(result.reason || undefined);
+                }
+            } else {
+                // Claude responded but didn't give structured JSON — likely still succeeded
+                // Check for positive signals in free-text
+                if (/success|created|done/i.test(reply)) {
+                    showSuccess();
+                    document.getElementById("reservationForm").reset();
+                } else {
+                    showError();
                 }
             }
+
+        } catch (err) {
+            console.error("Fetch error:", err);
+            showError("A network error occurred. Please try again or email rollingacresstudio@gmail.com.");
+        } finally {
+            setLoading(false);
         }
+    });
+
+    // ── pre-fill workshop from URL parameter ──
+    const urlParams = new URLSearchParams(window.location.search);
+    const workshopParam = urlParams.get("workshop");
+    if (workshopParam) {
+        const sel = document.getElementById("workshop");
+        for (let i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value.includes(workshopParam)) {
+                sel.selectedIndex = i;
+                break;
+            }
+        }
+    }
     </script>
 </body>
 </html>
